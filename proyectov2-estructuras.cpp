@@ -9,10 +9,10 @@ struct InfoPrestamos {
     int ContadorRecursos;
 
     // Método
-    void IngresarRecurso(InfoPrestamos codigo[], int &contador);
+    void IngresarRecurso(InfoPrestamos codigo[], int contador);//eliminamos el & del contador
 };
 
-void InfoPrestamos::IngresarRecurso(InfoPrestamos codigo[], int &contador) {
+void InfoPrestamos::IngresarRecurso(InfoPrestamos codigo[], int contador) {
     cout << "Ingresar un Recurso" << endl;
     cout << "Ingrese el nombre del recurso: ";
     cin >> codigo[contador].NombreRecurso;
