@@ -1,3 +1,5 @@
+//9 Noviembre 2024- Realizamos la implementacion de los requerimientos 2 y 3, implementamos la funcion de generar codigos unicos
+//Implementamos validadores e hicimos algunos ajustes, estos mismos estaran tambien comentados para poder guiar al lector
 #include <iostream>
 #include <string>
 #include <cstdlib> // Para srand y rand
