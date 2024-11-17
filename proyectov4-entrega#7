@@ -1,0 +1,403 @@
+#include <iostream>
+#include <string>
+using namespace std;
+//Implementacion de nueva estructura para manejar los codigos de estudiantes
+struct Estudiante {
+	long long CodigoEstudiante;
+	string NombreEstudiante;
+};
+struct InfoPrestamos {
+	int CodigoRecurso;
+	string NombreRecurso;
+	string NombreEstudiante;
+	bool Disponible;
+
+	void IngresarRecurso(InfoPrestamos codigo[], int &contadorRecursos);
+};
+
+void InfoPrestamos::IngresarRecurso(InfoPrestamos codigo[], int &contadorRecursos) {
+	cout << "Ingresar un Recurso" << endl;
+	cout << "Ingrese el nombre del recurso: ";
+	cin >> codigo[contadorRecursos].NombreRecurso;
+	codigo[contadorRecursos].CodigoRecurso = 100000 + contadorRecursos; // Asignamos un codigo unico
+	codigo[contadorRecursos].Disponible = true; // El recurso esta disponible desde un inicio
+	cout << "--------------------" << endl;
+	cout << "Recurso " << codigo[contadorRecursos].NombreRecurso << " ingresado con el codigo: " << codigo[contadorRecursos].CodigoRecurso << endl;
+	contadorRecursos++; // Incrementamos el contador de recursos
+}
+//Realizamos otro void igual al anterior con la nueva estructura estudiantes para asignar un codigo al estudiante, la forma en la que nos dijeron en la
+//retroalimentacion, aunque esta bien, no nos ayuda a almacenar correctamente los codigos.
+void RegistrarEstudiante(Estudiante estudiantes[], int &contadorEstudiantes, long long &codigoEstudianteGlobal) {
+	cout << "Registrar estudiante" << endl;
+	cout << "Ingrese el nombre del estudiante: ";
+	cin >> estudiantes[contadorEstudiantes].NombreEstudiante;
+
+	estudiantes[contadorEstudiantes].CodigoEstudiante = codigoEstudianteGlobal; // codigo unico para el estudiante
+	cout << "--------------------" << endl;
+	cout << "Registro exitoso!" << endl;
+	cout << "Nombre: " << estudiantes[contadorEstudiantes].NombreEstudiante << endl;
+	cout << "Codigo unico asignado: " << estudiantes[contadorEstudiantes].CodigoEstudiante << endl;
+
+	codigoEstudianteGlobal++; // Incrementar el codigo global
+	contadorEstudiantes++;
+}
+
+int main() {
+	InfoPrestamos recursos[20];
+	Estudiante estudiantes[100];
+	int opcion, opcion1;
+	int contadorRecursos = 0;
+	int contadorEstudiantes = 0;
+	long long codigoEstudianteGlobal = 10000000000;
+	long long CodigoEstudiante;
+
+	//elementos ingresados por defecto para facilitar las pruebas:
+
+	recursos[contadorRecursos].CodigoRecurso = 100000; // Codigo inicial
+	recursos[contadorRecursos].NombreRecurso = "Libro";
+	recursos[contadorRecursos].Disponible = true;
+	recursos[contadorRecursos].NombreEstudiante = -1; // No prestado
+	contadorRecursos++; // Incrementamos el contador de recursos
+
+	estudiantes[contadorEstudiantes].CodigoEstudiante = codigoEstudianteGlobal;
+	estudiantes[contadorEstudiantes].NombreEstudiante = "Johan";
+	contadorEstudiantes++;
+	codigoEstudianteGlobal++;
+
+	// Menu de opciones
+	do {
+		cout<<"----------------------------------"<<endl;
+		cout << "Central de Prestamos de la Universidad" << endl;
+		cout << "Menu de opciones: " << endl;
+		cout << "1. Ingresar un recurso" << endl;
+		cout << "2. Agregar un estudiante" << endl;
+		cout << "3. Prestar un recurso disponible" << endl;
+		cout << "4. Consultar los prestamos de un estudiante" << endl;
+		cout << "5. Consultar la informacion de un prestamo" << endl;
+		cout << "6. Devolver un recurso prestado" << endl;
+		cout << "0. Salir" << endl;
+		cout<<"----------------------------------"<<endl;
+		cout<<"Ingresar opcion: ";
+		cin >> opcion;
+
+		switch (opcion) {
+		case 1:
+			do {
+				cout<<"------------------------------"<<endl;
+				if (contadorRecursos < 20) {
+					recursos[0].IngresarRecurso(recursos, contadorRecursos);
+				} else {
+				    cout << "--------------------" << endl;
+					cout << "No se pueden ingresar mas recursos." << endl;
+				}
+				cout<<"------------------------------"<<endl;
+				cout << "Desea Agregar otro recurso?" << endl;
+				cout << "1. Ingresar otro recurso" << endl;
+				cout << "0. Salir" << endl;
+				cout<<"------------------------------"<<endl;
+				cout<<"Ingresar opcion: ";
+				cin >> opcion1;
+				if(opcion1 != 0 and opcion1 != 1) {
+					do {cout << "--------------------" << endl;
+						cout << "Valor introducido incorrecto" << endl;
+						cout << "1. Ingresar otro recurso, 0.Salir" << endl;
+						cout<<"Ingresar opcion: ";
+						cin >> opcion1;
+					} while(opcion1 != 0 and opcion1 != 1);
+				}
+			} while(opcion1 != 0);
+			break;
+
+		case 2:
+			do {
+				cout<<"------------------------------"<<endl;
+				RegistrarEstudiante(estudiantes, contadorEstudiantes, codigoEstudianteGlobal);//hacemos la inclusion de otra estructura para facilitar todo
+				cout<<"------------------------------"<<endl;
+				cout << "Desea Agregar otro estudiante?" << endl;
+				cout << "1. Ingresar otro estudiante" << endl;
+				cout << "0. Salir" << endl;
+				cout<<"------------------------------"<<endl;
+				cout<<"Ingresar opcion: ";
+				cin >> opcion1;
+				if(opcion1 != 0 and opcion1 != 1) {
+					do {cout << "--------------------" << endl;
+						cout << "Valor introducido incorrecto" << endl;
+						cout << "1. Ingresar otro recurso, 0.Salir" << endl;
+						cout<<"Ingresar opcion: ";
+						cin >> opcion1;
+					} while(opcion1 != 0 and opcion1 != 1);
+				}
+			} while(opcion1 != 0);
+			break;
+
+		case 3:
+			do {
+				cout << "------------------------------" << endl;
+				cout << "Prestamo de recurso disponible" << endl;
+				cout << "Ingresa el codigo estudiantil: ";
+				cin >> CodigoEstudiante;
+
+				// Validar el codigo de estudiante
+				if (CodigoEstudiante < 10000000000 || CodigoEstudiante > 99999999999) {
+					cout << "Error: El codigo debe ser de 11 digitos." << endl;
+					do {
+						cout << "Ingresar Codigo de 11 digitos: ";
+						cin >> CodigoEstudiante;
+					} while (CodigoEstudiante < 10000000000 || CodigoEstudiante > 99999999999);
+				}
+
+				// Buscar al estudiante por su codigo
+				string nombreEstudiante = "";
+				for (int i = 0; i < contadorEstudiantes; i++) {
+					if (estudiantes[i].CodigoEstudiante == CodigoEstudiante) {
+						nombreEstudiante = estudiantes[i].NombreEstudiante;
+						break;
+					}
+				}
+
+				if (nombreEstudiante == "") {
+				    cout << "--------------------" << endl;
+					cout << "El estudiante con el codigo " << CodigoEstudiante << " no esta registrado." << endl;
+					break;
+				}
+
+				// Solicitar el codigo del recurso
+				int codigoRecurso;
+				cout << "Ingresa el Codigo del recurso: ";
+				cin >> codigoRecurso;
+
+				// Validar el cidigo del recurso
+				if (codigoRecurso < 100000 || codigoRecurso > 999999) {
+					cout << "Error: El codigo debe ser de 6 digitos." << endl;
+					do {
+						cout << "Ingresar Codigo de 6 digitos: ";
+						cin >> codigoRecurso;
+					} while (codigoRecurso < 100000 || codigoRecurso > 999999);
+				}
+
+				// Buscar el recurso por su codigo
+				bool recursoEncontrado = false;
+				for (int i = 0; i < contadorRecursos; i++) {
+					if (recursos[i].CodigoRecurso == codigoRecurso) {
+						recursoEncontrado = true;
+						if (recursos[i].Disponible) {
+							recursos[i].Disponible = false; // Marcar el recurso como prestado
+							recursos[i].NombreEstudiante = nombreEstudiante; // Guardar el nombre del estudiante
+							cout << "--------------------" << endl;
+							cout << "Recurso " << recursos[i].NombreRecurso << " con el codigo "
+							     << recursos[i].CodigoRecurso << " prestado a el estudiante: " << nombreEstudiante<<", registrado con el codigo "<<CodigoEstudiante << endl;
+						} else {
+						    cout << "--------------------" << endl;
+							cout << "El recurso no esta disponible." << endl;
+						}
+						break;
+					}
+				}
+
+				if (!recursoEncontrado) {
+				    cout << "--------------------" << endl;
+					cout << "Codigo de recurso no encontrado." << endl;
+				}
+
+				cout << "------------------------------" << endl;
+				cout << "Desea realizar otro prestamo?" << endl;
+				cout << "1. Si" << endl;
+				cout << "0. No" << endl;
+				cout << "Ingresar opcion: ";
+				cin >> opcion1;
+
+				if (opcion1 != 0 && opcion1 != 1) {
+					do {cout << "--------------------" << endl;
+						cout << "Valor introducido incorrecto." << endl;
+						cout << "1. Si, 0. No" << endl;
+						cout << "Ingresar opcion: ";
+						cin >> opcion1;
+					} while (opcion1 != 0 && opcion1 != 1);
+				}
+			} while (opcion1 != 0);
+
+			break;
+
+
+		case 4: { // Implementacion requerimiento 4:
+			long long Consultacodigo; // Nueva variable temporal
+			do {
+				cout << "------------------------------" << endl;
+				cout << "Consultar prestamos de estudiante" << endl;
+				cout << "Ingresar el codigo del estudiante: ";
+				cin >> Consultacodigo;
+
+				// Validar el codigo de estudiante
+				if (Consultacodigo < 10000000000 || Consultacodigo > 99999999999) {
+				    cout << "--------------------" << endl;
+					cout << "Error: El codigo debe ser de 11 digitos." << endl;
+					do {
+						cout << "Ingresar Codigo de 11 digitos: ";
+						cin >> Consultacodigo;
+					} while (Consultacodigo < 10000000000 || Consultacodigo > 99999999999);
+				}
+
+				// Buscar al estudiante por su codigo
+				string nombreEstudiante = "";//creamos un string vacio para poder almacenar el nombre
+				for (int i = 0; i < contadorEstudiantes; i++) {
+					if (estudiantes[i].CodigoEstudiante == Consultacodigo) {
+						nombreEstudiante = estudiantes[i].NombreEstudiante;//recorremos todos los espacios de contadorEstudiantes para ver si coinciden
+						break;
+					}
+				}
+
+				if (nombreEstudiante == "") {//estudiante no encontrado, entonces el string seguira vacio
+				    cout << "--------------------" << endl;
+					cout << "El estudiante con el codigo " << Consultacodigo << " no esta registrado." << endl;
+					cout << "------------------------------" << endl;
+					cout << "Desea realizar otra consulta?" << endl;
+					cout << "1. Si" << endl;
+					cout << "0. No" << endl;
+					cout << "Ingresar opcion: ";
+					cin >> opcion1;
+
+					if (opcion1 != 0 && opcion1 != 1) {
+						do {
+							cout << "Valor introducido incorrecto." << endl;
+							cout << "1. Si, 0. No" << endl;
+							cout << "Ingresar opcion: ";
+							cin >> opcion1;
+						} while (opcion1 != 0 && opcion1 != 1);
+					}
+					break;
+				}
+
+				// Buscar los recursos prestados al estudiante
+				bool prestamosEncontrados = false;
+				for (int i = 0; i < contadorRecursos; i++) {
+					if (recursos[i].NombreEstudiante == nombreEstudiante) {
+						prestamosEncontrados = true;
+						cout << "--------------------" << endl;
+						cout << "Recurso: " << recursos[i].NombreRecurso
+						     << ", prestado al estudiante: "<<nombreEstudiante<<", con el codigo: " << recursos[i].CodigoRecurso << endl;
+					}
+				}
+
+				if (!prestamosEncontrados) {
+				    cout << "--------------------" << endl;
+					cout << "No se encontraron prestamos para el estudiante con el codigo: " << Consultacodigo << endl;
+				}
+
+				cout << "------------------------------" << endl;
+				cout << "Desea realizar otra consulta?" << endl;
+				cout << "1. Si" << endl;
+				cout << "0. No" << endl;
+				cout << "Ingresar opcion: ";
+				cin >> opcion1;
+
+				if (opcion1 != 0 && opcion1 != 1) {
+					do {cout << "--------------------" << endl;
+						cout << "Valor introducido incorrecto." << endl;
+						cout << "1. Si, 0. No" << endl;
+						cout << "Ingresar opcion: ";
+						cin >> opcion1;
+					} while (opcion1 != 0 && opcion1 != 1);
+				}
+			} while (opcion1 != 0);
+		}
+		break;
+
+		case 5: {
+			cout<<"------------------------------"<<endl;
+			cout << "Consultar informacion de prestamo" << endl;
+			// Aqui implementaremos la informacion de prestamos con una lista, indicando si estan disponibles y sus respectivos codigos
+		do{
+	    int opcion;
+    
+    cout << "Seleccione una opción:" << endl;
+    cout << "1. Préstamo de dinero" << endl;
+    cout << "2. Otros: (herramientas, libros, etc.)" << endl;
+    cout << "Ingrese su opción 1. o 2.: ";
+    cin >> opcion;
+
+    // Opción 1: Préstamo de dinero
+    if (opcion == 1) {cout << "--------------------" << endl;
+        double montoPrestamo, tasaInteres, montoTotal;
+        int anosPrestamo;
+
+        cout << "\nIngrese el monto: $";
+        cin >> montoPrestamo;
+
+        cout << "Ingrese la tasa de interes anual: ";
+        cin >> tasaInteres;
+
+        cout << "Ingrese el plazo del prestamo en años: ";
+        cin >> anosPrestamo;
+
+        // Calcular el monto total a pagar
+        montoTotal = montoPrestamo * (1 + (tasaInteres / 100) * anosPrestamo);
+
+        cout << "\n--- Información del préstamo ---" << endl;
+        cout << "Monto prestado: $" << montoPrestamo << endl;
+        cout << "Tasa de interes anual: " << tasaInteres << "%" << endl;
+        cout << "Plazo del prestamo: " << anosPrestamo << " años" << endl;
+        cout << "Monto total a pagar: $" << montoTotal << endl;
+    }
+    // Opción 2: Préstamo de pertenencias
+    else if (opcion == 2) 
+        {
+        string nombrePertenencia, nombreSolicitante;
+        int diasPrestamo;
+        
+
+        cout << "--------------------" << endl;
+        cout << "\nIngrese su nombre: ";
+        cin >> nombreSolicitante;
+        
+        cout << "Ingrese el nombre de la pertenencia (herramienta, libro, etc.): ";
+        cin >> nombrePertenencia;
+        
+        cout << "Ingrese el número de días para el préstamo: ";
+        cin >> diasPrestamo;
+
+        cout << "\n--- Información del préstamo ---" << endl;
+        cout << "Nombre del estudiante: " << nombreSolicitante << endl;
+        cout << "Pertenencia solicitada: " << nombrePertenencia << endl;
+       
+        }
+	cout<<"------------------------------"<<endl;
+				cout << "Desea consultar otro recurso?" << endl;
+				cout << "1. consultar" << endl;
+				cout << "0. Salir" << endl;
+				cout<<"------------------------------"<<endl;
+				cout<<"Ingresar opcion: ";
+				cin >> opcion1;
+				if(opcion1 != 0 and opcion1 != 1) {
+					do {cout << "--------------------" << endl;
+						cout << "incorrecto" << endl;
+						cout << "1. consultar, 0.Salir" << endl;
+						cout<<"Ingresar opcion: ";
+						cin >> opcion1;
+					} while(opcion1 != 0 and opcion1 != 1);
+				}
+    }while  (opcion1 != 0);
+}
+		    
+		break;
+
+		case 6: {
+			cout<<"------------------------------"<<endl;
+			cout << "Devolucion de prestamo" << endl;
+			// Aqui implementaremos la devolucion de un prestamo
+		}
+		break;
+
+		case 0:
+			break;
+
+		default:
+			cout << "--------------------" << endl;
+			cout << "Opcion no valida" << endl;
+		}
+	} while (opcion != 0);
+
+	cout<<"------------------------------"<<endl;
+	cout << "Gracias por usar mi appi&f&?" << endl;
+	cout<<"Hecho por Juan Diaz y Stanlyn Monterroza."<<endl;
+	return 0;
+}
